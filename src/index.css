@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply transition-colors duration-300;
+  }
+
+  button {
+    @apply transition-all duration-200;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .blur-glass {
+    @apply backdrop-blur bg-white/10 dark:bg-black/10;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent;
+  }
+
+  .card-glow {
+    @apply shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+}
