@@ -42,7 +42,7 @@ export default function Portfolio() {
     {
       name: "AWS Certified Cloud Practitioner",
       issuer: "Amazon Web Services",
-      date: "2024",
+      date: "2023",
       skills: "Cloud Computing • Security • Billing",
       url: "https://www.credly.com/go/KEWnp6NT",
     },
