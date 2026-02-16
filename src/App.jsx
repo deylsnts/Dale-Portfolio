@@ -1,7 +1,6 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, ExternalLink, Github, Linkedin, Moon, Sun } from "lucide-react";
+import { Mail, ExternalLink, Github, Linkedin, Moon, Sun, MapPin, Download, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -27,65 +26,152 @@ const itemVariants = {
 
 export default function Portfolio() {
   const { isDark, setIsDark } = useTheme();
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
+  const projects = [
+    {
+      name: "Financify",
+      desc: "Finance Tracker with Analytics and AI Insights.",
+      url: "https://financify-dale.vercel.app",
+      tech: "React • Node.js",
+    },
+  ];
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDark 
-        ? "bg-gradient-to-br from-black via-zinc-900 to-black text-white" 
-        : "bg-gradient-to-br from-white via-blue-50 to-slate-100 text-gray-900"
-    }`}>
+    <div
+      className={`min-h-screen transition-colors duration-300 antialiased ${
+        isDark ? "bg-zinc-950 text-zinc-200 selection:bg-blue-500/30" : "bg-zinc-50 text-zinc-900 selection:bg-blue-500/20"
+      }`}
+      style={{ fontFamily: '"Inter", sans-serif' }}
+    >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      `}</style>
+      {/* Background Gradient Blob */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className={`absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-20 blur-[120px] rounded-full pointer-events-none ${
+          isDark ? "bg-blue-600" : "bg-blue-400"
+        }`} />
+      </div>
+
       {/* Floating Theme Toggle Button */}
       <button
         onClick={() => setIsDark(!isDark)}
-        className={`fixed top-6 right-6 z-50 p-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl ${
+        className={`fixed top-6 right-6 z-50 p-2 rounded-full transition-all duration-300 ${
           isDark
-            ? "bg-zinc-800 hover:bg-zinc-700 text-yellow-400"
-            : "bg-blue-100 hover:bg-blue-200 text-blue-600"
+            ? "bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-100"
+            : "bg-white hover:bg-zinc-100 text-zinc-600 hover:text-zinc-900 shadow-sm border border-zinc-200"
         }`}
       >
-        {isDark ? <Sun size={24} /> : <Moon size={24} />}
+        {isDark ? <Sun size={20} /> : <Moon size={20} />}
       </button>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-12 grid gap-8 md:grid-cols-3">
+      {showAllProjects ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 py-24"
+        >
+          <Button
+            variant="ghost"
+            className={`mb-8 pl-0 hover:bg-transparent ${isDark ? "text-zinc-400 hover:text-zinc-100" : "text-zinc-600 hover:text-zinc-900"}`}
+            onClick={() => setShowAllProjects(false)}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
+          </Button>
+
+          <h2 className="text-3xl font-bold mb-8">All Projects</h2>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {projects.map((project, idx) => (
+              <a
+                key={idx}
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group block p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  isDark ? "border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900 hover:border-zinc-700" : "border-zinc-200 bg-white/50 hover:bg-white hover:shadow-md hover:border-zinc-300"
+                }`}
+              >
+                <div className="flex justify-between items-baseline mb-2">
+                  <h3 className="font-bold text-xl group-hover:text-blue-500 transition-colors">
+                    {project.name}
+                  </h3>
+                  <ExternalLink
+                    className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${
+                      isDark ? "text-zinc-500" : "text-zinc-400"
+                    }`}
+                  />
+                </div>
+                <p className={`mb-3 ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
+                  {project.desc}
+                </p>
+                <p className={`text-sm font-mono ${isDark ? "text-zinc-600" : "text-zinc-400"}`}>
+                  {project.tech}
+                </p>
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      ) : (
+      <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 py-24 grid gap-16 md:grid-cols-[1.5fr_1fr]">
         {/* Left Column */}
         <motion.div
-          className="md:col-span-2 grid gap-8"
+          className="grid gap-4"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Profile Header */}
           <motion.div variants={itemVariants}>
-            <div className={`flex flex-col sm:flex-row items-center sm:items-start gap-8 ${
-              isDark ? "bg-zinc-900/50" : "bg-white/50"
-            } backdrop-blur-sm p-8 rounded-xl border ${
-              isDark ? "border-zinc-800" : "border-blue-200"
-            } transition-all duration-300 hover:shadow-xl`}>
+            <div className="flex items-start gap-8">
               <img
                 src={isDark ? "/profile-night.jpg" : "/profile-day.jpg"}
                 alt="Profile"
-                className={`w-32 h-32 rounded-2xl object-cover ring-4 ${
-                  isDark ? "ring-blue-600" : "ring-blue-400"
+                className={`w-28 h-28 rounded-2xl object-cover transition-all duration-500 border-2 ${
+                  isDark ? "border-zinc-800" : "border-white shadow-sm"
                 }`}
               />
-              <div className="flex-1 text-center sm:text-left">
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent mb-2">
-                  Christian Dale Santos
-                </h1>
-                <p className={`text-lg mb-4 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                  Full Stack Developer | AI Enthusiast 
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    variant="secondary" 
-                    className={`rounded-full font-medium transition-all duration-300 ${
-                      isDark
-                        ? "bg-blue-600 hover:bg-blue-700 text-white"
-                        : "bg-blue-500 hover:bg-blue-600 text-white"
+              <div className="flex flex-col gap-5">
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent inline-block">
+                    Christian Dale Santos
+                  </h1>
+                  <p
+                    className={`text-lg ${
+                      isDark ? "text-zinc-400" : "text-zinc-500"
                     }`}
                   >
-                    <Phone className="w-4 h-4 mr-2" /> +63 927 298 5785
-                  </Button>
+                    Full Stack Developer & AI Enthusiast
+                  </p>
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 text-sm">
+                    <div className={`flex items-center gap-2 ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
+                      <MapPin className="w-4 h-4" />
+                      Cainta, Philippines
+                    </div>
+                    <div className={`flex items-center gap-2 ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                      </span>
+                      Available for work
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <Button
+                      variant="outline"
+                      className={`group relative overflow-hidden rounded-full px-6 gap-2 transition-all duration-300 hover:-translate-y-0.5 ${
+                        isDark
+                          ? "border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white"
+                          : "border-zinc-200 bg-white hover:bg-zinc-50 hover:border-zinc-300 text-zinc-600 hover:text-zinc-900 shadow-sm hover:shadow-md"
+                      }`}
+                      onClick={() => window.open("/resume.pdf", "_blank")}
+                    >
+                      <span className={`absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent ${isDark ? "via-white/10" : "via-black/5"} to-transparent pointer-events-none`} />
+                      <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" /> Download Resume
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -93,227 +179,261 @@ export default function Portfolio() {
 
           {/* About */}
           <motion.div variants={itemVariants}>
-            <Card className={`rounded-xl border transition-all duration-300 ${
-              isDark
-                ? "bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800/50"
-                : "bg-white/50 border-blue-200 hover:bg-white/80"
-            } backdrop-blur-sm shadow-lg hover:shadow-xl`}>
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-4 mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                  About Me
-                </h2>
-                <p className={`leading-relaxed text-lg ${isDark ? "text-gray-300" : "text-gray-700"}`}>
-                  I am a Bachelor of Science in Information Systems graduating student with a solid foundation in software engineering, enterprise systems, and data management. I am a results-driven and proactive individual, eager to contribute to digital transformation initiatives, particularly those involving large-scale system integration and innovative technology solutions.
-                  <br />
-                  <br />
-                  Recently, I have been diving deeper into the world of artificial intelligence, exploring how AI tools and techniques can be seamlessly integrated into modern applications to drive efficiency and innovation. I actively apply this knowledge by creating personal projects that challenge me to experiment with emerging technologies, refine my problem-solving skills, and develop practical solutions that bridge the gap between theoretical concepts and real-world applications.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Tech Stack */}
-          <motion.div variants={itemVariants}>
-            <Card className={`rounded-xl border transition-all duration-300 ${
-              isDark
-                ? "bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800/50"
-                : "bg-white/50 border-blue-200 hover:bg-white/80"
-            } backdrop-blur-sm shadow-lg hover:shadow-xl`}>
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-6 mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                  Tech Stack
-                </h2>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {[
-                    { title: "Frontend", items: "React, TypeScript, Tailwind CSS, Next.js" },
-                    { title: "Backend", items: "Node.js, Python, Express, Django" },
-                    { title: "Cloud", items: "Docker, AWS, Firebase" },
-                  ].map((category, idx) => (
-                    <motion.div
-                      key={idx}
-                      whileHover={{ scale: 1.05 }}
-                      className={`p-4 rounded-lg ${
-                        isDark ? "bg-zinc-800/50" : "bg-blue-100/50"
-                      } transition-all duration-300`}
-                    >
-                      <h3 className="font-bold text-blue-500 mb-2 text-lg">{category.title}</h3>
-                      <p className={isDark ? "text-gray-300" : "text-gray-700"}>{category.items}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-50">
+              About
+            </h2>
+            <p
+              className={`text-lg leading-relaxed ${
+                isDark ? "text-zinc-400" : "text-zinc-600"
+              }`}
+            >
+              I am a Bachelor of Science in Information Systems graduating student
+              with a solid foundation in software engineering, enterprise systems,
+              and data management. I am a results-driven and proactive individual,
+              eager to contribute to digital transformation initiatives.
+              <br />
+              <br />
+              Recently, I have been diving deeper into the world of artificial
+              intelligence, exploring how AI tools and techniques can be
+              seamlessly integrated into modern applications to drive efficiency
+              and innovation.
+            </p>
           </motion.div>
 
           {/* Projects */}
           <motion.div variants={itemVariants}>
-            <Card className={`rounded-xl border transition-all duration-300 ${
-              isDark
-                ? "bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800/50"
-                : "bg-white/50 border-blue-200 hover:bg-white/80"
-            } backdrop-blur-sm shadow-lg hover:shadow-xl`}>
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-6 mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                  Recent Projects
-                </h2>
-                <div className="space-y-4">
-                  {[
-                    { name: "Financify", desc: "Finance Tracker with Analytics and AI Insights built with React and Node.js", url: "https://financify-dale.vercel.app" },
-                  ].map((project, idx) => (
-                    <motion.div
-                      key={idx}
-                      whileHover={{ x: 10 }}
-                      className={`p-4 rounded-lg border transition-all duration-300 ${
-                        isDark
-                          ? "bg-zinc-800/30 border-zinc-700 hover:bg-zinc-800/60"
-                          : "bg-blue-50/50 border-blue-300 hover:bg-blue-100/50"
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-sm font-bold uppercase tracking-widest opacity-50">
+                Recent Projects
+              </h2>
+              <button
+                onClick={() => setShowAllProjects(true)}
+                className={`text-sm font-medium hover:underline underline-offset-4 ${isDark ? "text-zinc-400 hover:text-zinc-100" : "text-zinc-600 hover:text-zinc-900"}`}
+              >
+                See All
+              </button>
+            </div>
+            <div className="grid gap-6">
+              {projects.slice(0, 3).map((project, idx) => (
+                <a
+                  key={idx}
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group block p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                    isDark ? "border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900 hover:border-zinc-700" : "border-zinc-200 bg-white/50 hover:bg-white hover:shadow-md hover:border-zinc-300"
+                  }`}
+                >
+                  <div className="flex justify-between items-baseline mb-2">
+                    <h3 className="font-bold text-xl group-hover:text-blue-500 transition-colors">
+                      {project.name}
+                    </h3>
+                    <ExternalLink
+                      className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${
+                        isDark ? "text-zinc-500" : "text-zinc-400"
                       }`}
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-bold text-lg mb-1">
-                            {project.url ? (
-                              <a
-                                href={project.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={isDark ? 'hover:underline text-blue-300' : 'hover:underline text-blue-700'}
-                              >
-                                {project.name}
-                              </a>
-                            ) : (
-                              project.name
-                            )}
-                          </h3>
-                          <p className={isDark ? "text-gray-400" : "text-gray-600"}>{project.desc}</p>
-                        </div>
-                        {project.url ? (
-                          <a href={project.url} target="_blank" rel="noopener noreferrer" className="ml-3">
-                            <ExternalLink className={`w-5 h-5 ${isDark ? "text-blue-500" : "text-blue-600"}`} />
-                          </a>
-                        ) : (
-                          <ExternalLink className={`w-5 h-5 ${isDark ? "text-blue-500" : "text-blue-600"}`} />
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    />
+                  </div>
+                  <p
+                    className={`mb-3 ${
+                      isDark ? "text-zinc-400" : "text-zinc-600"
+                    }`}
+                  >
+                    {project.desc}
+                  </p>
+                  <p
+                    className={`text-sm font-mono ${
+                      isDark ? "text-zinc-600" : "text-zinc-400"
+                    }`}
+                  >
+                    {project.tech}
+                  </p>
+                </a>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
 
         {/* Right Column */}
         <motion.div
-          className="grid gap-8 auto-rows-max"
+          className="grid gap-12 content-start"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Contact Card */}
+          {/* Connect */}
           <motion.div variants={itemVariants}>
-            <Card className={`rounded-xl border bgTransition-all duration-300 ${
-              isDark
-                ? "bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-800"
-                : "bg-gradient-to-br from-blue-200/50 to-cyan-200/50 border-blue-300"
-            } backdrop-blur-sm shadow-lg hover:shadow-xl`}>
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-6 text-blue-500"></h2>
-                <div className="flex flex-col gap-3">
-                  {[
-                    { icon: Github, label: "GitHub", url: "https://github.com/deylsnts" },
-                    { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/deylsnts/" },
-                    { icon: Mail, label: "Email", url: "mailto:cdalesantos9@gmail.com" },
-                  ].map((item, idx) => (
-                    <motion.div key={idx} whileHover={{ x: 5 }}>
-                      <a href={item.url} target={item.label === "Email" ? "_self" : "_blank"} rel={item.label !== "Email" ? "noopener noreferrer" : ""}>
-                        <Button 
-                          className={`w-full rounded-full font-medium transition-all duration-300 ${
-                            isDark
-                              ? "bg-blue-600/80 hover:bg-blue-600 text-white border-blue-500"
-                              : "bg-blue-500/80 hover:bg-blue-600 text-white border-blue-400"
-                          }`}
-                        >
-                          <item.icon className="w-4 h-4 mr-2" /> {item.label}
-                        </Button>
-                      </a>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-50">
+              Connect
+            </h2>
+            <div className="flex flex-col gap-2">
+              {[
+                {
+                  icon: Github,
+                  label: "GitHub",
+                  url: "https://github.com/deylsnts",
+                },
+                {
+                  icon: Linkedin,
+                  label: "LinkedIn",
+                  url: "https://www.linkedin.com/in/deylsnts/",
+                },
+                {
+                  icon: Mail,
+                  label: "Email",
+                  url: "mailto:cdalesantos9@gmail.com",
+                },
+              ].map((item, idx) => (
+                <a
+                  key={idx}
+                  href={item.url}
+                  target={item.label === "Email" ? "_self" : "_blank"}
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-3 py-2 transition-colors ${
+                    isDark
+                      ? "text-zinc-400 hover:text-blue-400"
+                      : "text-zinc-600 hover:text-blue-600"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </a>
+              ))}
+            </div>
           </motion.div>
 
-          {/* Experience */}
+          {/* Tech Stack - Minimal List */}
           <motion.div variants={itemVariants}>
-            <Card className={`rounded-xl border transition-all duration-300 ${
-              isDark
-                ? "bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800/50"
-                : "bg-white/50 border-blue-200 hover:bg-white/80"
-            } backdrop-blur-sm shadow-lg hover:shadow-xl`}>
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-6 mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                  Experience
-                </h2>
-                <ul className="space-y-4">
-                  {[
-                    { role: "Operations Excellence Analyst Intern", company: "Globe Telecom", year: "2025" },
-                    { role: "Hello World!", company: "Wrote my first line of code", year: "2022" },
-                  ].map((exp, idx) => (
-                    <motion.li key={idx} className={`flex items-center gap-4 p-3 rounded-xl transition-all duration-300 group ${
-                      isDark ? "hover:bg-zinc-800/50" : "hover:bg-blue-100/50"
-                    }`}>
-                      <div className={`w-5 h-5 rounded flex-shrink-0 transition-all duration-300 ${
-                        isDark 
-                          ? "bg-gray-600 group-hover:bg-blue-500" 
-                          : "bg-gray-400 group-hover:bg-blue-500"
-                      }`} />
-                      <div className="flex-1">
-                        <p className="font-bold text-lg">{exp.role}</p>
-                        <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>{exp.company}</p>
-                      </div>
-                      <p className={`text-sm font-medium flex-shrink-0 ${isDark ? "text-gray-400" : "text-gray-600"}`}>{exp.year}</p>
-                    </motion.li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-50">
+              Stack
+            </h2>
+            <div className="grid gap-4">
+              {[
+                {
+                  title: "Frontend",
+                  items: "React, TypeScript, Tailwind, Next.js",
+                },
+                {
+                  title: "Backend",
+                  items: "Node.js, Python, Express, Django",
+                },
+                { title: "Cloud", items: "Docker, AWS, Firebase" },
+              ].map((cat, idx) => (
+                <div key={idx}>
+                  <h3
+                    className={`text-sm font-medium mb-1 ${
+                      isDark ? "text-zinc-200" : "text-zinc-800"
+                    }`}
+                  >
+                    {cat.title}
+                  </h3>
+                  <p
+                    className={`text-sm ${
+                      isDark ? "text-zinc-500" : "text-zinc-600"
+                    }`}
+                  >
+                    {cat.items}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Experience - Minimal Timeline */}
+          <motion.div variants={itemVariants}>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-50">
+              Experience
+            </h2>
+            <div className="ml-1.5">
+              {[
+                {
+                  role: "Ops Excellence Analyst Intern",
+                  company: "Globe Telecom",
+                  year: "2025",
+                },
+                {
+                  role: "Hello World!",
+                  company: "Wrote my first line of code",
+                  year: "2022",
+                },
+              ].map((exp, idx, arr) => (
+                <div
+                  key={idx}
+                  className={`relative pl-6 ${
+                    idx === arr.length - 1 ? "" : "pb-6"
+                  }`}
+                >
+                  <div
+                    className={`absolute left-0 w-px ${
+                      isDark ? "bg-zinc-800" : "bg-zinc-200"
+                    } ${
+                      idx === arr.length - 1 ? "top-0 h-1.5" : "bottom-0"
+                    } ${idx === 0 ? "top-1.5" : "top-0"}`}
+                  />
+                  <div
+                    className={`absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full border-2 ${
+                      isDark
+                        ? "bg-zinc-950 border-blue-500"
+                        : "bg-zinc-50 border-blue-500"
+                    }`}
+                  />
+                  <p className="font-medium text-sm">{exp.role}</p>
+                  <p
+                    className={`text-sm ${
+                      isDark ? "text-zinc-500" : "text-zinc-600"
+                    }`}
+                  >
+                    {exp.company}
+                  </p>
+                  <p
+                    className={`text-xs mt-1 font-mono ${
+                      isDark ? "text-zinc-600" : "text-zinc-400"
+                    }`}
+                  >
+                    {exp.year}
+                  </p>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
           {/* Education */}
           <motion.div variants={itemVariants}>
-            <Card className={`rounded-xl border transition-all duration-300 ${
-              isDark
-                ? "bg-zinc-900/50 border-zinc-800 hover:bg-zinc-800/50"
-                : "bg-white/50 border-blue-200 hover:bg-white/80"
-            } backdrop-blur-sm shadow-lg hover:shadow-xl`}>
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-6 mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                  Education
-                </h2>
-                <ul className="space-y-4">
-                  {[
-                    { degree: "Bachelor of Science in Information Systems", school: "De La Salle-College of Saint Benilde", year: "2026", honors: "Cum Laude" },
-                  ].map((edu, idx) => (
-                    <motion.li key={idx} className={`flex items-center gap-0 p-3 rounded-xl transition-all duration-300 group ${
-                      isDark ? "hover:bg-zinc-800/50" : "hover:bg-blue-100/50"
-                    }`}>
-                      <div className="flex-1">
-                        <p className="font-bold text-lg">{edu.degree}</p>
-                        <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>{edu.school}</p>
-                        <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>{edu.honors}</p>
-                      </div>
-                      <p className={`text-sm font-medium flex-shrink-0 ${isDark ? "text-gray-400" : "text-gray-600"}`}>{edu.year}</p>
-                    </motion.li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <h2 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-50">
+              Education
+            </h2>
+            <div>
+              <p className="font-medium text-sm">BS Information Systems</p>
+              <p
+                className={`text-sm ${
+                  isDark ? "text-zinc-500" : "text-zinc-600"
+                }`}
+              >
+                De La Salle-College of Saint Benilde
+              </p>
+              <div className="flex justify-between items-center mt-2">
+                <span
+                  className={`text-xs px-2 py-0.5 rounded border ${
+                    isDark
+                      ? "border-zinc-800 text-zinc-400"
+                      : "border-zinc-200 text-zinc-500"
+                  }`}
+                >
+                  Cum Laude
+                </span>
+                <span
+                  className={`text-xs font-mono ${
+                    isDark ? "text-zinc-600" : "text-zinc-400"
+                  }`}
+                >
+                  2026
+                </span>
+              </div>
+            </div>
           </motion.div>
-
-          {/* Skills card removed */}
         </motion.div>
       </div>
+      )}
     </div>
   );
 }
