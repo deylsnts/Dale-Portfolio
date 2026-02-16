@@ -354,7 +354,7 @@ export default function Portfolio() {
                 {
                   role: "Hello World!",
                   company: "Wrote my first line of code",
-                  year: "2022",
+                  year: "2019",
                 },
               ].map((exp, idx, arr) => (
                 <div
