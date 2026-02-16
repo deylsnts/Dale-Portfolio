@@ -434,6 +434,12 @@ export default function Portfolio() {
         </motion.div>
       </div>
       )}
+
+      <footer className={`relative z-10 py-8 text-center text-sm transition-colors ${
+        isDark ? "text-zinc-600" : "text-zinc-400"
+      }`}>
+        &copy; {new Date().getFullYear()} Christian Dale Santos. All rights reserved.
+      </footer>
     </div>
   );
 }
