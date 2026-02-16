@@ -187,7 +187,7 @@ export default function Portfolio() {
                 isDark ? "text-zinc-400" : "text-zinc-600"
               }`}
             >
-              I am a Bachelor of Science in Information Systems graduating student
+              I am a Bachelor of Science in Information Systems graduate
               with a solid foundation in software engineering, enterprise systems,
               and data management. I am a results-driven and proactive individual,
               eager to contribute to digital transformation initiatives.
