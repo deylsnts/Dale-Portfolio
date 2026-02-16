@@ -40,7 +40,7 @@ export default function Portfolio() {
 
   const certifications = [
     {
-      name: "AWS Certified Cloud Practitioner",
+      name: "AWS Cloud Foundations Training",
       issuer: "Amazon Web Services",
       date: "2023",
       skills: "Cloud Computing • Security • Billing",
