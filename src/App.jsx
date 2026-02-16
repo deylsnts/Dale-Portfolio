@@ -27,6 +27,7 @@ const itemVariants = {
 export default function Portfolio() {
   const { isDark, setIsDark } = useTheme();
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [showAllCertifications, setShowAllCertifications] = useState(false);
 
   const projects = [
     {
@@ -34,6 +35,16 @@ export default function Portfolio() {
       desc: "Finance Tracker with Analytics and AI Insights.",
       url: "https://financify-dale.vercel.app",
       tech: "React • Node.js",
+    },
+  ];
+
+  const certifications = [
+    {
+      name: "AWS Certified Cloud Practitioner",
+      issuer: "Amazon Web Services",
+      date: "2024",
+      skills: "Cloud Computing • Security • Billing",
+      url: "https://www.credly.com/go/KEWnp6NT",
     },
   ];
 
@@ -83,19 +94,19 @@ export default function Portfolio() {
 
           <h2 className="text-3xl font-bold mb-8">All Projects</h2>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             {projects.map((project, idx) => (
               <a
                 key={idx}
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group block p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                className={`group block p-3 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
                   isDark ? "border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900 hover:border-zinc-700" : "border-zinc-200 bg-white/50 hover:bg-white hover:shadow-md hover:border-zinc-300"
                 }`}
               >
-                <div className="flex justify-between items-baseline mb-2">
-                  <h3 className="font-bold text-xl group-hover:text-blue-500 transition-colors">
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-lg group-hover:text-blue-500 transition-colors">
                     {project.name}
                   </h3>
                   <ExternalLink
@@ -104,11 +115,67 @@ export default function Portfolio() {
                     }`}
                   />
                 </div>
-                <p className={`mb-3 ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
+                <p className={`mb-2 text-sm ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
                   {project.desc}
                 </p>
-                <p className={`text-sm font-mono ${isDark ? "text-zinc-600" : "text-zinc-400"}`}>
+                <p className={`text-xs font-mono ${isDark ? "text-zinc-600" : "text-zinc-400"}`}>
                   {project.tech}
+                </p>
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      ) : showAllCertifications ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 py-24"
+        >
+          <Button
+            variant="ghost"
+            className={`mb-8 pl-0 hover:bg-transparent ${isDark ? "text-zinc-400 hover:text-zinc-100" : "text-zinc-600 hover:text-zinc-900"}`}
+            onClick={() => setShowAllCertifications(false)}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
+          </Button>
+
+          <h2 className="text-3xl font-bold mb-8">All Certifications</h2>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {certifications.map((cert, idx) => (
+              <a
+                key={idx}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group block p-3 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  isDark ? "border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900 hover:border-zinc-700" : "border-zinc-200 bg-white/50 hover:bg-white hover:shadow-md hover:border-zinc-300"
+                }`}
+              >
+                <div className="flex justify-between items-baseline mb-1">
+                  <h3 className="font-bold text-lg group-hover:text-blue-500 transition-colors">
+                    {cert.name}
+                  </h3>
+                  <ExternalLink
+                    className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${
+                      isDark ? "text-zinc-500" : "text-zinc-400"
+                    }`}
+                  />
+                </div>
+                <p
+                  className={`mb-2 text-sm ${
+                    isDark ? "text-zinc-400" : "text-zinc-600"
+                  }`}
+                >
+                  {cert.issuer} • {cert.date}
+                </p>
+                <p
+                  className={`text-xs font-mono ${
+                    isDark ? "text-zinc-600" : "text-zinc-400"
+                  }`}
+                >
+                  {cert.skills}
                 </p>
               </a>
             ))}
@@ -210,22 +277,22 @@ export default function Portfolio() {
                 onClick={() => setShowAllProjects(true)}
                 className={`text-sm font-medium hover:underline underline-offset-4 ${isDark ? "text-zinc-400 hover:text-zinc-100" : "text-zinc-600 hover:text-zinc-900"}`}
               >
-                See All
+                View All
               </button>
             </div>
-            <div className="grid gap-6">
-              {projects.slice(0, 3).map((project, idx) => (
+            <div className="grid gap-4 md:grid-cols-2">
+              {projects.slice(0, 4).map((project, idx) => (
                 <a
                   key={idx}
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group block p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  className={`group block p-3 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
                     isDark ? "border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900 hover:border-zinc-700" : "border-zinc-200 bg-white/50 hover:bg-white hover:shadow-md hover:border-zinc-300"
                   }`}
                 >
-                  <div className="flex justify-between items-baseline mb-2">
-                    <h3 className="font-bold text-xl group-hover:text-blue-500 transition-colors">
+                  <div className="flex justify-between items-baseline mb-1">
+                    <h3 className="font-bold text-lg group-hover:text-blue-500 transition-colors">
                       {project.name}
                     </h3>
                     <ExternalLink
@@ -235,14 +302,14 @@ export default function Portfolio() {
                     />
                   </div>
                   <p
-                    className={`mb-3 ${
+                    className={`mb-2 text-sm ${
                       isDark ? "text-zinc-400" : "text-zinc-600"
                     }`}
                   >
                     {project.desc}
                   </p>
                   <p
-                    className={`text-sm font-mono ${
+                    className={`text-xs font-mono ${
                       isDark ? "text-zinc-600" : "text-zinc-400"
                     }`}
                   >
@@ -252,7 +319,62 @@ export default function Portfolio() {
               ))}
             </div>
           </motion.div>
+
+          {/* Certifications */}
+          <motion.div variants={itemVariants}>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-sm font-bold uppercase tracking-widest opacity-50">
+                Recent Certifications
+              </h2>
+              <button
+                onClick={() => setShowAllCertifications(true)}
+                className={`text-sm font-medium hover:underline underline-offset-4 ${isDark ? "text-zinc-400 hover:text-zinc-100" : "text-zinc-600 hover:text-zinc-900"}`}
+              >
+                View All
+              </button>
+            </div>
+            <div className="grid gap-4">
+              {certifications.slice(0, 4).map((cert, idx) => (
+                <a
+                  key={idx}
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group block p-3 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                    isDark ? "border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900 hover:border-zinc-700" : "border-zinc-200 bg-white/50 hover:bg-white hover:shadow-md hover:border-zinc-300"
+                  }`}
+                >
+                  <div className="flex justify-between items-baseline mb-1">
+                    <h3 className="font-bold text-lg group-hover:text-blue-500 transition-colors">
+                      {cert.name}
+                    </h3>
+                    <ExternalLink
+                      className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ${
+                        isDark ? "text-zinc-500" : "text-zinc-400"
+                      }`}
+                    />
+                  </div>
+                  <p
+                    className={`mb-2 text-sm ${
+                      isDark ? "text-zinc-400" : "text-zinc-600"
+                    }`}
+                  >
+                    {cert.issuer} • {cert.date}
+                  </p>
+                  <p
+                    className={`text-xs font-mono ${
+                      isDark ? "text-zinc-600" : "text-zinc-400"
+                    }`}
+                  >
+                    {cert.skills}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
+
+        
 
         {/* Right Column */}
         <motion.div
