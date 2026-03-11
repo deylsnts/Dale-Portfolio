@@ -34,7 +34,7 @@ export default function Portfolio() {
       name: "Financify",
       desc: "Finance Tracker with Analytics and AI Insights.",
       url: "https://financify-dale.vercel.app",
-      tech: "React • Node.js",
+      tech: "React • Django • NeonDB • OpenAI API • Tailwind • Vercel",
     },
   ];
 
